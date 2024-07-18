@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { initFlowbite } from 'flowbite';
 
 
 @Component({
@@ -12,5 +13,13 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   title = 'fe-sweetcircle-dashboard';
 
-  
+  constructor(private router: Router) { }
+
+  ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+       setTimeout(() => {  initFlowbite();})
+      }
+    });
+  }
 }
