@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from '../../model/product.model';
+import { NgForm } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,12 @@ export class ProductService {
     return this.httpClient.get(`${this.API_URL}/${id}`)
   }
 
-  public saveProduct(product : Product){
-    return this.httpClient.post(`${this.API_URL}`, product)
+  public saveProduct(formData : FormData){
+    return this.httpClient.post(`${this.API_URL}`, formData)
+  }
+
+  public deleteProductById(id:number){
+    return this.httpClient.delete(`${this.API_URL}/${id}`)
   }
 
 

@@ -3,10 +3,10 @@ export interface Product {
     id:number;
     name:string;
     price:number;
-    description:number;
+    description:string;
     stock:number;
     productMenu:string;
-    image:string[]
+    image:string;
 
 
 }
