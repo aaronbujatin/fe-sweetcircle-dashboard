@@ -1,0 +1,14 @@
+::ng-deep .p-confirm-dialog .p-button {
+    border: none !important;
+    outline: none !important;
+}
+
+::ng-deep .p-fileupload .p-button {
+    border: none !important;
+    outline: none !important;
+}
+
+.p-button {
+    outline: none !important;
+    box-shadow: none !important;
+}

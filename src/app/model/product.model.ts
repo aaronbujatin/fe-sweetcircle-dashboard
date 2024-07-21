@@ -6,7 +6,7 @@ export interface Product {
     description:string;
     stock:number;
     productMenu:string;
-    image:string;
+    image:File | string;
 
 
 }

@@ -3,17 +3,32 @@ import { ProductService } from '../../shared/services/product.service';
 import { Product } from '../../model/product.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { FileUploadModule } from 'primeng/fileupload';
+import { FileUploadEvent } from 'primeng/fileupload';
+import { FileSelectEvent } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-food',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule,
+    FormsModule,
+    DialogModule,
+    FileUploadModule,
+    ButtonModule, InputTextModule, ConfirmDialogModule, ToastModule, ButtonModule, FloatLabelModule,],
   templateUrl: './food.component.html',
-  styleUrl: './food.component.css'
+  styleUrl: './food.component.css',
+  providers: [ConfirmationService, MessageService]
 })
 export default class FoodComponent implements OnInit {
 
-  constructor(private productService: ProductService, private renderer: Renderer2) { }
+  constructor(private productService: ProductService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   products: Product[] = [];
   foodLength: number = 0;
@@ -32,23 +47,51 @@ export default class FoodComponent implements OnInit {
     formData.append('description', form.value.description);
     formData.append('stock', form.value.stock);
     formData.append('image', this.product.image);
-    console.log(formData);
+    console.log(this.product.image);
 
     this.saveProduct(formData);
+   
+  }
+
+  showSucess() {
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product added successfully' });
+  }
+
+  confirmSaveProduct(event: Event) {
+    // this.confirmationService.confirm({
+    //   target: event.target as EventTarget,
+    //   message: `Do you want to save ${form.product.name}?`,
+    //   header: 'Add Product Confirmation',
+    //   icon: 'pi pi-info-circle',
+    //   acceptButtonStyleClass: "focus:outline-none focus:shadow-none text-white inline-flex items-center bg-gradient-to-br from-[#FB72BD] to-[#FBB371] font-medium rounded-lg text-sm px-5 py-2.5 text-center",
+    //   rejectButtonStyleClass: "focus:outline-none focus:shadow-none text-gradient bg-white font-medium rounded-lg text-sm px-5 py-2.5 text-center ",
+    //   acceptIcon: "none",
+    //   rejectIcon: "none",
+    //   key : 'save',
+    //   accept: () => {
+    //     this.saveProduct(formData);
+    //     this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+    //   },
+    //   reject: () => {
+    //     this.confirmationService.close();
+    //   }
+    // });
+    console.log();
 
   }
 
   onFileSelected(event: any) {
-    this.product.image = event.target.files[0];
+    if (event.files && event.files.length > 0) {
+      this.product.image = event.files[0];
+    }
   }
-
-  @ViewChild('closeModalBtn') closeModalBtn!: ElementRef;
 
   saveProduct(formData: FormData) {
     this.productService.saveProduct(formData).subscribe(
       (response: any) => {
         console.log(response);
-        this.closeModalBtn.nativeElement.click();
+        this.showSucess()
+        this.visible = false
         this.getAllProducts()
       },
       (error) => {
@@ -69,45 +112,49 @@ export default class FoodComponent implements OnInit {
     )
   }
 
-  @ViewChild('deleteButton', { static: true }) deleteButton!: ElementRef;
-  onDeleteModal() {
 
-  }
-
-  productName: string = ""
-  productIdToDelete: number = 0;
-  viewProductName(product: Product) {
-    this.productName = product.name
-    this.productIdToDelete = product.id
-    this.triggerButtonClick()
-  }
-
-  triggerButtonClick() {
-    this.renderer.selectRootElement(this.deleteButton.nativeElement).click();
-  }
-
-  @ViewChild('deleteButton2') deleteButton2!: ElementRef;
-
-  closeDeleteModal() {
-    this.deleteButton2.nativeElement.click();
-  }
-
-  deleteProductById() {
-    console.log("Product delete", this.productIdToDelete);
-    this.productService.deleteProductById(this.productIdToDelete).subscribe(
+  deleteProductById(id: number) {
+    this.productService.deleteProductById(id).subscribe(
       response => {
-        this.closeDeleteModal();
         this.getAllProducts()
         console.log(response);
       },
       error => {
         console.log(error);
-
       }
     )
-
-
   }
+
+
+  visible: boolean = false;
+
+  showDialog() {
+    this.visible = true;
+  }
+
+
+  onClickedDeleteProduct(event: Event, product: Product) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: `Do you want to delete ${product.name}?`,
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: "focus:outline-none focus:shadow-none text-white inline-flex items-center bg-gradient-to-br from-[#FB72BD] to-[#FBB371] font-medium rounded-lg text-sm px-5 py-2.5 text-center",
+      rejectButtonStyleClass: "focus:outline-none focus:shadow-none text-gradient bg-white font-medium rounded-lg text-sm px-5 py-2.5 text-center ",
+      acceptIcon: "none",
+      rejectIcon: "none",
+      key: 'delete',
+      accept: () => {
+        this.deleteProductById(product.id)
+        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+      },
+      reject: () => {
+        this.confirmationService.close();
+      }
+    });
+  }
+
+
 
 
 

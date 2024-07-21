@@ -18,16 +18,9 @@
     </div>
 
     <div class="mt-6 md:flex md:items-center md:justify-between">
-        <button data-modal-target="save-modal" data-modal-toggle="save-modal"
-            class="font-['Montserrat'] bg-gradient-to-br from-[#FB72BD] to-[#FBB371]  flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 rounded-lg shrink-0 sm:w-auto gap-x-2 ">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-
-            <span>Add food</span>
-        </button>
+        <p-button icon="pi pi-plus" (onClick)="showDialog()" label="Add food"
+            styleClass="focus:outline-none focus:shadow-none text-white inline-flex items-center bg-gradient-to-br from-[#FB72BD] to-[#FBB371] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            [outlined]="true" [outlined]="true" />
         <div class="relative flex items-center mt-4 md:mt-0">
             <span class="absolute">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -116,56 +109,19 @@
 
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                                     <div class="flex justify-between gap-1">
-                                        <button
-                                            class="font-['Montserrat'] bg-gradient-to-br from-[#FB72BD] to-[#FBB371]  flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 rounded-lg shrink-0 sm:w-auto gap-x-2 ">
-                                            <svg class="w-4 h-4 text-inherit" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                    stroke-linejoin="round"></g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <path
-                                                        d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
-                                                        stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                    <path
-                                                        d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
-                                                        stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                </g>
-                                            </svg>
+                                        <p-button icon="pi pi-pen-to-square"
+                                            (onClick)="onClickedDeleteProduct($event, product)" label="Edit"
+                                            styleClass="focus:outline-none focus:shadow-none text-white inline-flex items-center bg-gradient-to-br from-[#FB72BD] to-[#FBB371] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                            [outlined]="true" [outlined]="true" />
+                                        <p-button icon="pi pi-trash" (onClick)="onClickedDeleteProduct($event, product)"
+                                            label="Delete"
+                                            styleClass="focus:outline-none focus:shadow-none text-white inline-flex items-center bg-gradient-to-br from-[#FB72BD] to-[#FBB371] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                            [outlined]="true" [outlined]="true" />
 
-                                            <span>Edit</span>
-                                        </button>
-                                        <button data-modal-target="delete-modal" data-modal-toggle="delete-modal"
-                                            (click)="viewProductName(product)" type="button"
-                                            class="font-['Montserrat'] bg-gradient-to-br from-[#FB72BD] to-[#FBB371]  flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 rounded-lg shrink-0 sm:w-auto gap-x-2 ">
-                                            <svg class="w-4 h-4 text-inherit" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                    stroke-linejoin="round"></g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <path d="M4 7H20" stroke="#ffffff" stroke-width="2"
-                                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    <path
-                                                        d="M6 10L7.70141 19.3578C7.87432 20.3088 8.70258 21 9.66915 21H14.3308C15.2974 21 16.1257 20.3087 16.2986 19.3578L18 10"
-                                                        stroke="#ffffff" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                    <path
-                                                        d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
-                                                        stroke="#ffffff" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                </g>
-                                            </svg>
 
-                                            <span>Delete</span>
-                                        </button>
                                     </div>
                                 </td>
                             </tr>
-
-
                         </tbody>
                     </table>
                 </div>
@@ -207,141 +163,84 @@
 </section>
 
 
-
-
-<!-- Save modal -->
-<div id="save-modal" tabindex="-1" aria-hidden="true"
-    class="font-['Montserrat'] hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-md max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    Create New Food
-                </h3>
-                <button #closeModalBtn type="button" data-modal-hide="save-modal"
-                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <form class="p-4 md:p-5" (ngSubmit)="onSubmit(productForm)" #productForm="ngForm">
-                <div class="grid gap-4 mb-4 grid-cols-2">
-                    <div class="col-span-2">
-                        <label for="name"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                        <input [(ngModel)]="product.name" required type="text" name="name"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#FB998E] focus:border-[#FB998E]  block w-full p-2.5"
-                            placeholder="Type product name" required="">
-                    </div>
-                    <div class="col-span-2 sm:col-span-1">
-                        <label for="price"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                        <input [(ngModel)]="product.price" required type="number" name="price"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#FB998E] focus:border-[#FB998E] block w-full p-2.5 "
-                            placeholder="30" required="">
-                    </div>
-                    <div class="col-span-2 sm:col-span-1">
-                        <label for="price"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock</label>
-                        <input [(ngModel)]="product.stock" required type="number" name="stock"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#FB998E] focus:border-[#FB998E] block w-full p-2.5 "
-                            placeholder="30" required="">
-                    </div>
-
-                    <div class="col-span-2">
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                        <select name="productMenu" type="text" [(ngModel)]="product.productMenu" required
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#FB998E] focus:border-[#FB998E] block w-full p-2.5 ">
-                            <option value="" disabled>Select category</option>
-                            <option value="DONUTS">Donuts</option>
-                            <option value="BAKED_GOODS">Baked Goods</option>
-                            <option value="PASTA">Pasta</option>
-                            <option value="RICE_MEALS">Rice Meals</option>
-                            <option value="SNACKWICHES">Snackwiches</option>
-                            <option value="BEVERAGES">Beverages</option>
-                        </select>
-                    </div>
-
-                    <div class="col-span-2">
-                        <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input">Upload product
-                            image</label>
-                        <input (change)="onFileSelected($event)" [(ngModel)]="product.image" required type="file"
-                            name="image" class="block w-full text-sm text-slate-500
-                            
-                          " />
-
-                    </div>
-
-                    <div class="col-span-2">
-                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
-                            Description</label>
-                        <textarea [(ngModel)]="product.description" required name="description" for="description"
-                            rows="4"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-[#FB998E] focus:border-[#FB998E]"
-                            placeholder="Write product description here"></textarea>
-                    </div>
-                </div>
-                <button type="submit"
-                    class="text-white inline-flex items-center bg-gradient-to-br from-[#FB72BD] to-[#FBB371] font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
-                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                    Add new product
-                </button>
-            </form>
-
-        </div>
-    </div>
+<div class="card flex justify-content-center gap-2">
+    <p-toast />
+    <p-confirmDialog key="delete" />
+</div>
+<div class="card flex justify-content-center gap-2">
+    <p-toast />
+    <p-confirmDialog key="save" />
 </div>
 
+<p-dialog header="Add new product" [style]="{ width: '35rem' }" [modal]="true" [(visible)]="visible">
+    <span class="p-text-secondary block mb-5">Please fill out the required input.</span>
+    <form class="p-4 md:p-5" #productForm="ngForm" (ngSubmit)="onSubmit(productForm)">
+        <div class="grid gap-4 mb-4 grid-cols-2">
+            <div class="col-span-2">
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                <input [(ngModel)]="product.name" required type="text" name="name" pInputText
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#FB998E] focus:border-[#FB998E]  block w-full p-2.5"
+                    placeholder="Type product name" required="">
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+                <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                <input [(ngModel)]="product.price" required type="number" name="price" pInputText
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#FB998E] focus:border-[#FB998E] block w-full p-2.5 "
+                    placeholder="30" required="">
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+                <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock</label>
+                <input [(ngModel)]="product.stock" required type="number" name="stock" pInputText
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#FB998E] focus:border-[#FB998E] block w-full p-2.5 "
+                    placeholder="30" required="">
+            </div>
 
-<!-- delete modal -->
-<button #deleteButton data-modal-target="delete-modal" data-modal-toggle="delete-modal"
-    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    type="button">
-    Toggle modal
-</button>
+            <div class="col-span-2">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                <select name="productMenu" type="text" [(ngModel)]="product.productMenu" required pInputText
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#FB998E] focus:border-[#FB998E] block w-full p-2.5 ">
+                    <option value="" disabled>Select category</option>
+                    <option value="DONUTS">Donuts</option>
+                    <option value="BAKED_GOODS">Baked Goods</option>
+                    <option value="PASTA">Pasta</option>
+                    <option value="RICE_MEALS">Rice Meals</option>
+                    <option value="SNACKWICHES">Snackwiches</option>
+                    <option value="BEVERAGES">Beverages</option>
+                </select>
+            </div>
 
-<div id="delete-modal" tabindex="-1"
-    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-md max-h-full">
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <button #closeModalBtn type="button"
-                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-hide="delete-modal">
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                </svg>
-                <span class="sr-only">Close modal</span>
-            </button>
-            <div class="p-4 md:p-5 text-center">
-                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete
-                    {{productName}}?</h3>
-                <button  #deleteButton2 type="button" (click)="deleteProductById()"
-                    class="text-white bg-gradient-to-br from-[#FB72BD] to-[#FBB371] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                    Yes, I'm sure
-                </button>
-                <button data-modal-hide="delete-modal" type="button"
-                    class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No,
-                    cancel</button>
+            <div class="col-span-2">
+                <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input">Upload product
+                    image</label>
+
+                <p-fileUpload name="image"
+                    styleClass="focus:outline-none focus:shadow-none text-white inline-flex items-center bg-gradient-to-br from-[#FB72BD] to-[#FBB371] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                    mode="basic" chooseLabel="Choose file" chooseIcon="pi pi-upload" accept="image/*"
+                    maxFileSize="10000000" (onSelect)="onFileSelected($event)" />
+                <!-- 
+                <input (change)="onFileSelected2($event)" [(ngModel)]="product.image" required type="file" name="image"
+                    class="block w-full text-sm text-slate-500" /> -->
+            </div>
+
+            <div class="col-span-2">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
+                    Description</label>
+                <textarea [(ngModel)]="product.description" required name="description" for="description" rows="4"
+                    pInputText
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-[#FB998E] focus:border-[#FB998E]"
+                    placeholder="Write product description here"></textarea>
             </div>
         </div>
-    </div>
-</div>
+        <div class="flex justify-content-end gap-2">
+            <p-button type="submit"
+                styleClass=" focus:outline-none focus:shadow-none text-white inline-flex items-center bg-gradient-to-br from-[#FB72BD] to-[#FBB371] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                [outlined]="true" label="Save">
+            </p-button>
+            <p-button (onClick)="visible = false"
+                styleClass=" focus:outline-none focus:shadow-none text-gradient bg-white font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+                [outlined]="true" label="Cancel">
+            </p-button>
+        </div>
+    </form>
+
+</p-dialog>
