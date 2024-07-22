@@ -12,8 +12,8 @@ export class ProductService {
 
   private readonly API_URL = 'http://localhost:8080/api/v1/products';
 
-  public getAllProducts(){
-    return this.httpClient.get(`${this.API_URL}`);
+  public getAllProducts(page: number, size: number){
+    return this.httpClient.get(`${this.API_URL}?page=${page}&size=${size}`);
   }
 
   public getProductById(id : number){
@@ -22,6 +22,10 @@ export class ProductService {
 
   public saveProduct(formData : FormData){
     return this.httpClient.post(`${this.API_URL}`, formData)
+  }
+
+  public updateProduct(formData : FormData){
+    return this.httpClient.put(`${this.API_URL}`, formData)
   }
 
   public deleteProductById(id:number){

@@ -11,8 +11,15 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FileUploadModule } from 'primeng/fileupload';
-import { FileUploadEvent } from 'primeng/fileupload';
-import { FileSelectEvent } from 'primeng/fileupload';
+import { PaginatorModule } from 'primeng/paginator';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+
+interface PageEvent {
+  first: number;
+  rows: number;
+  page: number;
+  pageCount: number;
+}
 
 @Component({
   selector: 'app-food',
@@ -20,6 +27,8 @@ import { FileSelectEvent } from 'primeng/fileupload';
   imports: [CommonModule,
     FormsModule,
     DialogModule,
+    PaginatorModule,
+    ProgressSpinnerModule,
     FileUploadModule,
     ButtonModule, InputTextModule, ConfirmDialogModule, ToastModule, ButtonModule, FloatLabelModule,],
   templateUrl: './food.component.html',
@@ -48,37 +57,17 @@ export default class FoodComponent implements OnInit {
     formData.append('stock', form.value.stock);
     formData.append('image', this.product.image);
     console.log(this.product.image);
-
     this.saveProduct(formData);
-   
   }
 
   showSucess() {
     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product added successfully' });
   }
 
-  confirmSaveProduct(event: Event) {
-    // this.confirmationService.confirm({
-    //   target: event.target as EventTarget,
-    //   message: `Do you want to save ${form.product.name}?`,
-    //   header: 'Add Product Confirmation',
-    //   icon: 'pi pi-info-circle',
-    //   acceptButtonStyleClass: "focus:outline-none focus:shadow-none text-white inline-flex items-center bg-gradient-to-br from-[#FB72BD] to-[#FBB371] font-medium rounded-lg text-sm px-5 py-2.5 text-center",
-    //   rejectButtonStyleClass: "focus:outline-none focus:shadow-none text-gradient bg-white font-medium rounded-lg text-sm px-5 py-2.5 text-center ",
-    //   acceptIcon: "none",
-    //   rejectIcon: "none",
-    //   key : 'save',
-    //   accept: () => {
-    //     this.saveProduct(formData);
-    //     this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
-    //   },
-    //   reject: () => {
-    //     this.confirmationService.close();
-    //   }
-    // });
-    console.log();
-
+  showSucessProductUpdate() {
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product update successfully' });
   }
+
 
   onFileSelected(event: any) {
     if (event.files && event.files.length > 0) {
@@ -89,23 +78,27 @@ export default class FoodComponent implements OnInit {
   saveProduct(formData: FormData) {
     this.productService.saveProduct(formData).subscribe(
       (response: any) => {
+        this.getAllProducts()
         console.log(response);
         this.showSucess()
-        this.visible = false
-        this.getAllProducts()
+        this.isAddNewProductDialogVisible = false
       },
       (error) => {
         console.log(error);
       }
     )
   }
+  loading: boolean = false;
 
   getAllProducts() {
-    this.productService.getAllProducts().subscribe(
+    this.loading = true;
+    this.productService.getAllProducts(this.first / this.rows, this.rows).subscribe(
       (response: any) => {
-        this.products = response;
-        this.foodLength = this.products.length
-        console.log(this.products);
+        this.products = response.content;
+        this.loading = false;
+        this.foodLength = response.totalElements
+        console.log(response);
+
       }, (error) => {
         console.log(error);
       }
@@ -117,7 +110,48 @@ export default class FoodComponent implements OnInit {
     this.productService.deleteProductById(id).subscribe(
       response => {
         this.getAllProducts()
-        console.log(response);
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  viewProduct: Product = {} as Product;
+  getProductById(id: number) {
+    this.productService.getProductById(id).subscribe(
+      (response: any) => {
+        this.viewProduct = response
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  onSubmitToUpdate(form: any) {
+    const formData = new FormData();
+    formData.append('id', form.value.id);
+    formData.append('name', form.value.name);
+    formData.append('price', form.value.price);
+    formData.append('productMenu', form.value.productMenu);
+    formData.append('description', form.value.description);
+    formData.append('stock', form.value.stock);
+    formData.append('image', this.product.image);
+    // Convert FormData to an object for easier viewing
+    const formDataObj: any = {};
+    formData.forEach((value, key) => {
+      formDataObj[key] = value;
+    });
+    this.updateProduct(formData);
+  }
+
+  updateProduct(formData: FormData) {
+    this.productService.updateProduct(formData).subscribe(
+      (response: any) => {
+        this.getAllProducts()
+        this.showSucessProductUpdate()
+        this.isUpdateProductDialogVisible = false
       },
       error => {
         console.log(error);
@@ -126,10 +160,16 @@ export default class FoodComponent implements OnInit {
   }
 
 
-  visible: boolean = false;
+  isAddNewProductDialogVisible: boolean = false;
+  isUpdateProductDialogVisible: boolean = false;
 
-  showDialog() {
-    this.visible = true;
+  showAddNewProductDialog() {
+    this.isAddNewProductDialogVisible = true;
+  }
+
+  showUpdateProductDialog(id: number) {
+    this.getProductById(id);
+    this.isUpdateProductDialogVisible = true;
   }
 
 
@@ -146,12 +186,21 @@ export default class FoodComponent implements OnInit {
       key: 'delete',
       accept: () => {
         this.deleteProductById(product.id)
-        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+        this.messageService.add({ severity: 'success', summary: 'Confirmed', detail: 'Record deleted' });
       },
       reject: () => {
         this.confirmationService.close();
       }
     });
+  }
+
+  first: number = 0;
+  rows: number = 7;
+
+  onPageChange(event: PageEvent) {
+    this.first = event.first;
+    this.rows = event.rows;
+    this.getAllProducts()
   }
 
 
